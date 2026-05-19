@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.prestamos.dto.ClienteDTO;
+import com.example.prestamos.dto.ClienteResumenZonaDTO;
 import com.example.prestamos.model.Cliente;
 import com.example.prestamos.service.ClienteService;
 
@@ -32,7 +33,8 @@ public class ClienteController {
     @GetMapping("/zona/{zonaId}")
     public ResponseEntity<?> listarPorZona(@PathVariable Integer zonaId) {
         try {
-            return ResponseEntity.ok(clienteService.listarPorZona(zonaId));
+            List<ClienteResumenZonaDTO> resultado = clienteService.listarPorZona(zonaId);
+            return ResponseEntity.ok(resultado);
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
