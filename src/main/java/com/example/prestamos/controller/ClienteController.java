@@ -29,6 +29,15 @@ public class ClienteController {
         return ResponseEntity.ok(clienteService.listar());
     }
 
+    @GetMapping("/zona/{zonaId}")
+    public ResponseEntity<?> listarPorZona(@PathVariable Integer zonaId) {
+        try {
+            return ResponseEntity.ok(clienteService.listarPorZona(zonaId));
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
+
     @PostMapping
     public ResponseEntity<Cliente> crear(@RequestBody ClienteDTO clienteDTO) {
         Cliente clienteCreado = clienteService.crear(clienteDTO);

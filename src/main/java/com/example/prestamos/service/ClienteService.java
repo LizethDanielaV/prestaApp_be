@@ -29,6 +29,12 @@ public class ClienteService {
         return clienteRepository.findAll();
     }
 
+    public List<Cliente> listarPorZona(Integer zonaId) {
+        zonaRepository.findById(zonaId)
+                .orElseThrow(() -> new RuntimeException("Zona no encontrada: " + zonaId));
+        return clienteRepository.findByZonaId(zonaId);
+    }
+
     public void eliminar(Long cedula) {
         Cliente cliente = clienteRepository.findById(cedula)
                 .orElseThrow(() -> new RuntimeException("Cliente no encontrado: " + cedula));

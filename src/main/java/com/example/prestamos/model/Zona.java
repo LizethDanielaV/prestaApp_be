@@ -14,7 +14,8 @@ import lombok.Data;
 public class Zona {
     @Id
      @GeneratedValue(strategy = GenerationType.IDENTITY) //para que se generen automaticamente
-    private int id_zona;
+    @Column(name = "id_zona")
+    private int id;
 
     @Column(nullable = false)
     private String nombre; 
