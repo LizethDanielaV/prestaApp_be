@@ -1,0 +1,4 @@
+# Copia este archivo como application-local.properties y completa los valores
+DB_URL=jdbc:postgresql://localhost:5432/prestamos_db
+DB_USERNAME=tu_usuario
+DB_PASSWORD=tu_contraseña
