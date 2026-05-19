@@ -1,11 +1,14 @@
 package com.example.prestamos.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.prestamos.dto.CreditoDTO;
+import com.example.prestamos.dto.CreditoDetalleDTO;
+import com.example.prestamos.dto.CreditoResumenClienteDTO;
 import com.example.prestamos.model.Cliente;
 import com.example.prestamos.model.Credito;
 import com.example.prestamos.model.FrecuenciaPago;
@@ -57,5 +60,42 @@ public class CreditoService {
 
     public List<Credito> buscarPorCliente(Long cedula) {
         return creditoRepository.findByClienteCedula(cedula);
+    }
+
+    public CreditoDetalleDTO obtenerDetalle(int id) {
+        Credito c = creditoRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Crédito no encontrado: " + id));
+
+        float valorInteresPorCuota = c.getMonto_prestamo() * c.getInteres();
+
+        return new CreditoDetalleDTO(
+            c.getMonto_prestamo(),
+            c.getFecha_prestamo(),
+            c.getFecha_limite(),
+            c.getInteres(),
+            c.getNumero_de_coutas(),
+            c.getFrecuenciaPago().getNombre(),
+            valorInteresPorCuota,
+            2,
+            0,
+            0,
+            c.getMonto_prestamo()
+        );
+    }
+
+    public List<CreditoResumenClienteDTO> resumenPorCliente(Long cedula) {
+        List<Credito> creditos = creditoRepository.findByClienteCedula(cedula);
+        List<CreditoResumenClienteDTO> resumen = new ArrayList<>();
+        for (int i = 0; i < creditos.size(); i++) {
+            Credito c = creditos.get(i);
+            resumen.add(new CreditoResumenClienteDTO(
+                "Credito " + (i + 1),
+                c.getMonto_prestamo(),
+                0,
+                2,
+                c.getNumero_de_coutas()
+            ));
+        }
+        return resumen;
     }
 }

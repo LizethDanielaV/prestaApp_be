@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.prestamos.dto.CreditoDTO;
+import com.example.prestamos.dto.CreditoDetalleDTO;
+import com.example.prestamos.dto.CreditoResumenClienteDTO;
 import com.example.prestamos.model.Credito;
 import com.example.prestamos.service.CreditoService;
 
@@ -50,5 +52,19 @@ public class CreditoController {
     @GetMapping("/cliente/{cedula}")
     public ResponseEntity<List<Credito>> buscarPorCliente(@PathVariable Long cedula) {
         return ResponseEntity.ok(creditoService.buscarPorCliente(cedula));
+    }
+
+    @GetMapping("/{id}/detalle")
+    public ResponseEntity<?> obtenerDetalle(@PathVariable int id) {
+        try {
+            return ResponseEntity.ok(creditoService.obtenerDetalle(id));
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/cliente/{cedula}/resumen")
+    public ResponseEntity<List<CreditoResumenClienteDTO>> resumenPorCliente(@PathVariable Long cedula) {
+        return ResponseEntity.ok(creditoService.resumenPorCliente(cedula));
     }
 }
