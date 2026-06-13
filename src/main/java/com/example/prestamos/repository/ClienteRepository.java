@@ -10,4 +10,6 @@ public interface ClienteRepository extends JpaRepository<Cliente, Long> {
 
     List<Cliente> findByZonaId(Integer zonaId);
 
+    boolean existsByZonaId(Integer zonaId);
+
 }

@@ -1,4 +1,9 @@
-# Copia este archivo como application-local.properties y completa los valores
+# Copia este archivo como application-local.properties y completa los valores reales
+
+# Base de datos PostgreSQL
 DB_URL=jdbc:postgresql://localhost:5432/prestamos_db
-DB_USERNAME=tu_usuario
-DB_PASSWORD=tu_contraseña
+DB_USERNAME=tu_usuario_postgres
+DB_PASSWORD=tu_contraseña_postgres
+
+# Firebase: coloca el archivo firebase-service-account.json en src/main/resources/
+# Ese archivo lo debes recibir del lider del proyecto por fuera del repositorio

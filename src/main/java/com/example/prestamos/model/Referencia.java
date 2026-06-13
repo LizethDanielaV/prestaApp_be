@@ -21,6 +21,4 @@ public class Referencia {
     @Column(name = "celular")
     private Long celular;
 
-    @Column(length = 300, nullable = true)
-    private String direccion;
 }

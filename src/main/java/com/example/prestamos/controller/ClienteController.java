@@ -8,15 +8,18 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.example.prestamos.dto.ClienteDTO;
 import com.example.prestamos.dto.ClienteResumenZonaDTO;
-import com.example.prestamos.model.Cliente;
+import com.example.prestamos.dto.cliente.ClienteCreateDTO;
+import com.example.prestamos.dto.cliente.ClienteEditarDTO;
+import com.example.prestamos.dto.cliente.ClienteResponseDTO;
 import com.example.prestamos.service.ClienteService;
+
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/clientes")
@@ -26,7 +29,7 @@ public class ClienteController {
     ClienteService clienteService;
 
     @GetMapping
-    public ResponseEntity<List<Cliente>> listar() {
+    public ResponseEntity<List<ClienteResponseDTO>> listar() {
         return ResponseEntity.ok(clienteService.listar());
     }
 
@@ -41,11 +44,17 @@ public class ClienteController {
     }
 
     @PostMapping
-    public ResponseEntity<Cliente> crear(@RequestBody ClienteDTO clienteDTO) {
-        Cliente clienteCreado = clienteService.crear(clienteDTO);
+    public ResponseEntity<ClienteResponseDTO> crear(@RequestBody ClienteCreateDTO clienteDTO) {
+        ClienteResponseDTO clienteCreado = clienteService.crear(clienteDTO);
         return ResponseEntity
             .status(HttpStatus.CREATED)
             .body(clienteCreado);
+    }
+
+    @PatchMapping("/{cedula}")
+    public ResponseEntity<ClienteResponseDTO> editar(@PathVariable Long cedula, @Valid @RequestBody ClienteEditarDTO clienteDTO) {
+        ClienteResponseDTO clienteEditado = clienteService.editar(cedula, clienteDTO);
+        return ResponseEntity.ok(clienteEditado);
     }
 
     @DeleteMapping("/{cedula}")
