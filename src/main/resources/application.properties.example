@@ -2,8 +2,8 @@
 
 # Base de datos PostgreSQL
 DB_URL=jdbc:postgresql://localhost:5432/prestamos_db
-DB_USERNAME=tu_usuario_postgres
-DB_PASSWORD=tu_contraseña_postgres
+DB_USERNAME=postgres
+DB_PASSWORD=12345678
 
 # Firebase: coloca el archivo firebase-service-account.json en src/main/resources/
 # Ese archivo lo debes recibir del lider del proyecto por fuera del repositorio

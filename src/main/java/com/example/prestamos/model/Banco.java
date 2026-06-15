@@ -10,28 +10,23 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Data;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-@Table(name = "estado")
+@Table(name = "banco")
 @Data
-public class Estado {
+public class Banco {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id_estado;
+    private int id_banco;
 
-    @Column(length = 20, nullable = false)
+    @Column(length = 50, nullable = false)
     private String nombre;
 
-    @Column(length = 10, nullable = false, name = "aplica_a")
-    private String aplicaA; // "credito" o "cuota"
+    @Column(nullable = false)
+    private boolean activo;
 
-    @OneToMany(mappedBy = "estado")
+    @OneToMany(mappedBy = "banco")
     @com.fasterxml.jackson.annotation.JsonIgnore
-    private List<Cuota> cuotas;
-
-    @OneToMany(mappedBy = "estado")
-    @com.fasterxml.jackson.annotation.JsonIgnore
-    private List<Credito> creditos;
+    private List<MetodoDePago> metodosDePago;
 }

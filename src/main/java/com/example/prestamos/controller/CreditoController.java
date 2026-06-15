@@ -67,4 +67,5 @@ public class CreditoController {
     public ResponseEntity<List<CreditoResumenClienteDTO>> resumenPorCliente(@PathVariable Long cedula) {
         return ResponseEntity.ok(creditoService.resumenPorCliente(cedula));
     }
+
 }

@@ -22,18 +22,19 @@ public class Abono {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id_abono;
 
-    @Column(nullable = false)
-    private int numero_de_cuota;
+    @Column(scale = 2, nullable = false)
+    private float capital_abonado;
 
-    @Column(nullable = false)
-    private LocalDateTime fecha_pago;
+    @Column(scale = 2, nullable = false)
+    private float interes_abonado;
 
-    @Column(precision = 12, scale = 2, nullable = false)
-    private BigDecimal monto_total;
+    @Column(scale = 2, nullable = false)
+    private float total_abonado;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "metodo_de_pago_id")
-    private MetodoDePago metodoDePago;
+    @JoinColumn(name = "pago_id")
+    @com.fasterxml.jackson.annotation.JsonIgnore
+    private Pago pago;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "cuota_id")

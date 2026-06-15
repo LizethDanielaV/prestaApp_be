@@ -14,6 +14,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Data;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "cuota")
@@ -33,14 +34,14 @@ public class Cuota {
     @Column
     private LocalDateTime fecha_pago_real;
 
-    @Column(scale = 2, nullable = false)
+    @Column
     private float monto_capital;
 
-    @Column(scale = 2, nullable = false)
-    private float monto_intereses;
+    @Column
+    private float capital_pagado;
 
-    @Column(scale = 2, nullable = false)
-    private float monto_total;
+    @Column
+    private float interes_pagado;
 
     @ManyToOne()
     @JoinColumn(name="estado_id")
@@ -48,9 +49,11 @@ public class Cuota {
 
     @ManyToOne(optional=false)
     @JoinColumn(name="credito_id")
+    @com.fasterxml.jackson.annotation.JsonIgnore
     private Credito credito;
 
     @OneToMany(mappedBy = "cuota")
+    @JsonIgnore
     private List<Abono> abonos;
 
 }

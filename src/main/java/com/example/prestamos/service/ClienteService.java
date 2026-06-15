@@ -53,38 +53,40 @@ public class ClienteService {
                 .toList();
     }
 
-    @Transactional(readOnly = true)
-    public List<ClienteResumenZonaDTO> listarPorZona(Integer zonaId) {
-        zonaRepository.findById(zonaId)
-                .orElseThrow(() -> new RuntimeException("Zona no encontrada: " + zonaId));
+   @Transactional(readOnly = true)
+public List<ClienteResumenZonaDTO> listarPorZona(Integer zonaId) {
+    zonaRepository.findById(zonaId)
+            .orElseThrow(() -> new RuntimeException("Zona no encontrada: " + zonaId));
 
-        List<Cliente> clientes = clienteRepository.findByZonaId(zonaId);
+    List<Cliente> clientes = clienteRepository.findByZonaId(zonaId);
 
-        return clientes.stream().map(cliente -> {
-            List<Credito> creditos = cliente.getCreditos() != null ? cliente.getCreditos() : List.of();
+    return clientes.stream().map(cliente -> {
+        List<Credito> todosLosCreditos = cliente.getCreditos() != null ? cliente.getCreditos() : List.of();
 
-            int cantidadCreditos = creditos.size();
+        List<Credito> creditosActivos = todosLosCreditos.stream()
+                .filter(c -> c.getEstado() == null || !"cancelado".equals(c.getEstado().getNombre()))
+                .toList();
 
-            double montoTotalPrestamo = creditos.stream()
-                    .mapToDouble(Credito::getMonto_prestamo)
-                    .sum();
+        int cantidadCreditos = creditosActivos.size();
 
-            double saldoPendiente = creditos.stream()
-                    .flatMap(c -> c.getCuotas() != null ? c.getCuotas().stream() : java.util.stream.Stream.empty())
-                    .filter(cuota -> cuota.getFecha_pago_real() == null)
-                    .mapToDouble(Cuota::getMonto_total)
-                    .sum();
+        double montoTotalPrestamo = creditosActivos.stream()
+                .mapToDouble(Credito::getMonto_prestamo)
+                .sum();
 
-            return new ClienteResumenZonaDTO(
-                    cliente.getCedula(),
-                    cliente.getNombre(),
-                    cliente.getDireccion(),
-                    cantidadCreditos,
-                    montoTotalPrestamo,
-                    saldoPendiente
-            );
-        }).toList();
-    }
+        double saldoPendiente = creditosActivos.stream()
+                .mapToDouble(Credito::getSaldo_capital)
+                .sum();
+
+        return new ClienteResumenZonaDTO(
+                cliente.getCedula(),
+                cliente.getNombre(),
+                cliente.getDireccion(),
+                cantidadCreditos,
+                montoTotalPrestamo,
+                saldoPendiente
+        );
+    }).toList();
+}
 
     public void eliminar(Long cedula) {
         Cliente cliente = clienteRepository.findById(cedula)

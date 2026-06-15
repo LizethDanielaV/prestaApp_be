@@ -18,23 +18,26 @@ import lombok.Data;
 @Table(name="credito")
 @Data
 public class Credito {
-    @Id
+     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id_credito;
 
-    @Column( nullable = false)
+    @Column(nullable = false)
     private float monto_prestamo;
 
-     @Column( nullable = false)
+    @Column(nullable = false, columnDefinition = "float4 default 0")
+    private float saldo_capital;
+
+    @Column(nullable = false)
     private float interes;
 
-     @Column( nullable = false)
+    @Column(nullable = false)
     private int numero_de_coutas;
 
-     @Column( nullable = false)
+    @Column(nullable = false)
     private LocalDate fecha_prestamo;
 
-    @Column( nullable = false)
+    @Column(nullable = false)
     private LocalDate fecha_limite;
     
     @ManyToOne(optional=false)
@@ -47,4 +50,9 @@ public class Credito {
 
     @OneToMany(mappedBy = "credito")
     private List<Cuota> cuotas;
+
+    @ManyToOne
+    @JoinColumn(name = "estado_id")
+    private Estado estado;
+
 }

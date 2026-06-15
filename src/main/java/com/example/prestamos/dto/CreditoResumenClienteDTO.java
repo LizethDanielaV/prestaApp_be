@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CreditoResumenClienteDTO {
+    private int id;
     private String label;
     private float montoPrestamo;
     private float montoRestante;

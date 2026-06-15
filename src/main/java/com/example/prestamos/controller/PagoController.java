@@ -10,15 +10,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.prestamos.dto.AbonoCreditoDTO;
-import com.example.prestamos.model.Abono;
 import com.example.prestamos.model.Pago;
-import com.example.prestamos.service.AbonoService;
+import com.example.prestamos.service.PagoService;
 
 @RestController
-@RequestMapping("/abonos")
-public class AbonoController {
+@RequestMapping("/pagos")
+public class PagoController {
 
     @Autowired
-    AbonoService abonoService;
+    private PagoService pagoService;
 
+    @PostMapping("/credito/{id}")
+    public ResponseEntity<Pago> abonarCredito(@PathVariable int id, @RequestBody AbonoCreditoDTO dto) {
+        Pago pago = pagoService.abonarCredito(id, dto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(pago);
+    }
 }
